@@ -30,12 +30,13 @@ if __name__ == '__main__':
             print('empty wiki')
             continue
 
-        # fname =
         #remove XML
         print('remove XML')
         open('./dumps/'+lang+'-raw.xml.bz2', 'wb').write(r.content)
         subprocess.call(['sh', './get-data-wiki.sh', './dumps/'+lang+'-raw.xml.bz2', lang])
-        f = open('./extracted/' + lang + '.txt', 'r')
+
+        fname = './extracted/' + lang + '.txt' #temp file created by the shell script
+        f = open(fname, 'r')
         l = f.readlines()
         f.close()
 
@@ -56,8 +57,16 @@ if __name__ == '__main__':
             except:
                 continue
 
-        # TODO: tokenize by writing to file so script can read
-        # subprocess.call(['sh', './tokenize.sh', lang, ])
+        # tokenize
+        f = open(fname, 'w')
+        f.writelines(texts)
+        f.close()
+        subprocess.call(['sh', './tokenize.sh', lang, fname, './extracted/tokenized-'+lang+'.txt'])
+        f = open('./extracted/tokenized-'+lang+'.txt', 'r')
+        texts = f.read()
+        f.close()
+
+        # remove punctuation
 
         # split to 500-char chunks
         print('chunking')
