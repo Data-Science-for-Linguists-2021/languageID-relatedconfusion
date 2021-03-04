@@ -18,6 +18,8 @@ Progress report
 
 ### March
 
--   Started summary notebook of data processing pipeline, cleaned some code
+-   1: Started summary notebook of data processing pipeline, cleaned some code
 
--    
+-   2: Regathered small data samples
+
+-   3: Finished draft of data pipeline notebook
