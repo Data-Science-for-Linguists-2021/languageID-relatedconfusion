@@ -20,15 +20,17 @@ if __name__ == '__main__':
     if 'extracted' not in os.listdir():
         os.mkdir('extracted')
 
-    skip = True
+    # skip = True
 
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        # if lang =='en': ## useful for debugging
+        # if lang =='ar': ## useful for debugging
         #     skip = False
         # elif skip:
         #     continue
+        # else:
+        #     break
 
         try:
             # don't download dump if already have it from previous run:
@@ -39,6 +41,7 @@ if __name__ == '__main__':
                 r = requests.get(dumplink, allow_redirects=True)
 
                 fsz = int(r.headers['Content-length'])
+                # print(fsz)
                 if fsz < 2**20: #filesize less than 1 MB, can't do much with it so skip
                     print('wiki too small', lang, langs[lang], sep='\t')
                     continue
@@ -63,17 +66,18 @@ if __name__ == '__main__':
         #fix encoding
         if lang != 'en':   #en corpus too big; crases on this step but doesn't need it anyways
             l = [ w.encode('utf-8').decode('raw_unicode_escape') for w in l]
+        print(len(l))
 
         # parse jsons, do some cleaning of remaining XML junk
-        pat = re.compile('\\n')#|http://.*|&lt.*;|__.*__')
+        # pat = re.compile('\\n')#|http://.*|&lt.*;|__.*__')
         texts = ''
         for line in l:
-            if len(texts) > 1000000:
+            if len(texts) > 100000:
                 break
             try:
                 article = rapidjson.loads(line)
                 text = article['text']
-                text = re.sub(pat, '', text)
+                # text = re.sub(pat, ' ', text)
                 if len(text) > 0:
                     texts = texts + ' ' + text
             except:
@@ -93,7 +97,7 @@ if __name__ == '__main__':
         if statmsgs: print('\tclean 2')
         texts2 = ''
         for char in texts:
-            if (not cat(char).startswith('P')) and (char != '|'):
+            if (not cat(char).startswith('P')) and (char != '|') and (char !='\n'):
                 texts2 += char
         texts = texts2
         pattern = re.compile(r'  +')
@@ -107,6 +111,7 @@ if __name__ == '__main__':
             args = [iter(iterable)] * n
             return zip_longest(fillvalue=fillvalue, *args)
         chunks = [''.join(lis) for lis in group(n, texts, '')]
+        # print(len(chunks), type(chunks))
 
         # shuffle chunks, then limit to 10000 chunks per language
         if statmsgs: print('\tshuffling')
@@ -119,5 +124,5 @@ if __name__ == '__main__':
         # write to file
         if statmsgs: print('\twriting to file')
         f = open('./extracted/' + lang + '.txt', 'w')
-        f.writelines(chunks)
+        f.writelines([c+'\n' for c in chunks])
         f.close()
