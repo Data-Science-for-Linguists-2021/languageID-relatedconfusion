@@ -4,6 +4,6 @@ Sonia's Data Science for Linguists term project: A classifier to detect the lang
 ---
 
 ### Current status
-First Progress Report (due 4 March) is NOT completed.  <br>  
+First Progress Report (due 5 March) is NOT completed.  <br>  
 
 See `progress_report.md` for more details, or `project_plan.md` for overall plan.
