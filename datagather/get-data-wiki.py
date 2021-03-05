@@ -19,13 +19,15 @@ if __name__ == '__main__':
         os.mkdir('dumps')
     if 'extracted' not in os.listdir():
         os.mkdir('extracted')
+    if 'texts' not in os.listdir():
+        os.mkdir('texts')
 
     # skip = True
 
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        # if lang =='ar': ## useful for debugging
+        # if lang =='hr': ## useful for debugging
         #     skip = False
         # elif skip:
         #     continue
@@ -66,10 +68,9 @@ if __name__ == '__main__':
         #fix encoding
         if lang != 'en':   #en corpus too big; crases on this step but doesn't need it anyways
             l = [ w.encode('utf-8').decode('raw_unicode_escape') for w in l]
-        print(len(l))
 
         # parse jsons, do some cleaning of remaining XML junk
-        # pat = re.compile('\\n')#|http://.*|&lt.*;|__.*__')
+        pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
         texts = ''
         for line in l:
             if len(texts) > 100000:
@@ -77,7 +78,7 @@ if __name__ == '__main__':
             try:
                 article = rapidjson.loads(line)
                 text = article['text']
-                # text = re.sub(pat, ' ', text)
+                text = re.sub(pat, ' ', text)
                 if len(text) > 0:
                     texts = texts + ' ' + text
             except:
@@ -97,11 +98,17 @@ if __name__ == '__main__':
         if statmsgs: print('\tclean 2')
         texts2 = ''
         for char in texts:
-            if (not cat(char).startswith('P')) and (char != '|') and (char !='\n'):
+            #                   punctuation             pipeline            newline        numbers, ², fractions, etc
+            if (not cat(char).startswith('P')) and (char != '|') and (char !='\n') and (not cat(char).startswith('N')):
                 texts2 += char
         texts = texts2
         pattern = re.compile(r'  +')
         texts = re.sub(pattern, ' ', texts) #replace multiple spaces with just one
+
+        # write non-chunked text to file
+        f = open('./texts/' + lang + '.txt', 'w')
+        f.writelines(texts + '\n')
+        f.close()
 
         # split to 500-char chunks
         if statmsgs: print('\tchunking')
@@ -111,7 +118,6 @@ if __name__ == '__main__':
             args = [iter(iterable)] * n
             return zip_longest(fillvalue=fillvalue, *args)
         chunks = [''.join(lis) for lis in group(n, texts, '')]
-        # print(len(chunks), type(chunks))
 
         # shuffle chunks, then limit to 10000 chunks per language
         if statmsgs: print('\tshuffling')

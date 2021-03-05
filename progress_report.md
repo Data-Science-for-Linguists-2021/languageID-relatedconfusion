@@ -7,29 +7,15 @@ Progress report
 
 Originally I wanted to use two datasets: the JHU Bible Corpus and Wikipedia dumps. I have tried to obtain the JHU Bible Corpus dataset by filling out a form to request it nearly a month ago, and even emailed the first author on the paper announcing this data set a couple weeks ago. I never got a response, so I have instead focused more on the Wikipedia data.
 
-For the Wikipedia data, I have written the script datagather/get-data-wiki.py that automates much of the pipeline. For each language, it downloads the raw dump file, ensures that the file is large enough to be useable, removes the Wikipedia formatting so I can get just plain article texts and does some cleaning like removing punctuation. Then, it splits all the text for a language into 500-character lines (I call "chunks") and writes each language's chunks to its own .txt file. Each chunk is one line. Example output files are in XXXXXXXXX and a walkthrough of this data gathering process is in data-explanation.ipynb. I did the chunking in anticipation that I will want to create a file that contains random samples of texts from all the languages together, with two columns: one for the language sample and the other for the language's abbreviation/code.
+For the Wikipedia data, I have written the script [datagather/get-data-wiki.py](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/blob/main/data-explanation.ipynb) that automates much of the pipeline. For each language, it downloads the raw dump file, ensures that the file is large enough to be useable, removes the Wikipedia formatting so I can get just plain article texts and does some cleaning like removing punctuation. Then, it splits all the text for a language into 500-character lines (I call "chunks") and writes each language's chunks to its own .txt file. Each chunk is one line. Example output files are in data_samples/ and a walkthrough of this data gathering process is in data-explanation.ipynb. I did the chunking in anticipation that I will want to create a file that contains random samples of texts from all the languages together, with two columns: one for the language sample and the other for the language's abbreviation/code. Altogether, the script creates three directories: datagather/dumps/ for raw dump files, datagather/texts/ for texts that are extracted and cleaned but not chunked and datagather/extracted/ for texts that are chunked and shuffled.
 
 The script takes about 1.5 days to run in its entirety, which I did manage to do in order to ensure it doesn't crash on any language and my computer doesn't run out of storage. However, there were some issues in the ways the data was being cleaned and processed, so I deleted that data. I've fixed some of the issues, then ran the script again. However, I was running out of time to meet this progress report deadline, so I decided to artificially only process the first 100000 characters' worth of articles for each language this go-around. This is *not* the full amount of data, but I wanted to have something as I wrote the report.
 
 ### Next steps
 
-There are also a few random bugs I need to fix, this is my immediate to-do list:
+Next, I plan to run the entire script again to process the full amount of data and write another script to mix the samples from different languages together. I can also get started with feature extraction. I'll probably take a moment to look at how prior language identification systems have been done and think more about what type of model/architecture I want.
 
-- Fix lack of space between some words (eg "thisexample" instead of "this example")
-- Check for shuffling bug - chunks not being shuffled as randomly as they should?
-- Not really a bug but something to add: more data cleaning (eg remove numbers)
-
-These issues seem fairly minor, I feel pretty confident I'll figure them out. After that, I will run the entire script again to process the full amount of data and write another script to mix the samples from different languages together. Then, I can get started with feature extraction.
-
-I also do have some ideas for how I will separate a language from its writing system automatically, so the classifier doesn't just pay attention to that. Lets say a sample of text starts:
-
-        nfcdsoe fdjswlg afk
-
-The first character, 'n' will be represented by a 0, the 'f' by a 1, c by a 2, and so on until reaching the space character, which will still be represented by a space. The second word starts with 'f', which we already chose to represent by 2. The 'd' will be represented by 3 after being discovered in the first word. The 'j' is new, so it will be represented by '7' because it is the seventh new character to be discovered. Overall, the text will become (with dashes inserted for readability):
-
-        0-1-2-3-4-5-6 1-3-7-4-8-9-10 11-1-12
-
-Then, I would store each number on disk as an integer. I don't know if Python will give me that much control over how things are written to disk, Python might store as string which is less efficient. I could do it in C if need be, but would like to stick to Python where possible since it's what we use in this class.
+I also do have some ideas for how I will separate a language from its writing system automatically, so the classifier doesn't just pay attention to that. For each language's extracted text file (or more precisely a portion I have chosen for the train dataset), I would compute how common each character is. The most common character corresponds to 0, second most common to 1 and so on. Then, I could replace the characters with their number correspondances. I would want to store these numbers on disk as integers but don't know if Python will give me that much control over how things are written to disk. Python might store as string which is less efficient. I could do it in C if need be, but would like to stick to Python where possible since it's what we use in this class.
 
 ### Data sharing ideas
 
