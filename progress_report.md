@@ -51,3 +51,5 @@ Also, my data gathering script automatically fetches files from the web and clea
 -   4: Drafter first progress report
 
 -   5: Finishing first progress report, data pipeline notebook
+
+-   14: Learned (some) how to use CRC, set up remote storage device in prep to gather full data
