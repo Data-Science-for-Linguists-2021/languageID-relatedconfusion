@@ -151,9 +151,10 @@ if __name__ == '__main__':
         #     except:
         #         continue
         pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
-        texts = ''
+        textsarr = []
         for line in l:
-            texts = texts + re.sub(pat, ' ', line) + ' '
+            textsarr.append(re.sub(pat, ' ', line))
+        texts = ' '.join(textsarr)
 
         # final clean: remove punctuation, sequences of multiple spaces
         if statmsgs: print('\tclean 2')
