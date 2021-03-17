@@ -152,7 +152,7 @@ if __name__ == '__main__':
         #         continue
         texts = ''
         for line in l:
-            texts.append(l+' ')
+            texts = texts + l + ' '
 
         # final clean: remove punctuation, sequences of multiple spaces
         if statmsgs: print('\tclean 2')
