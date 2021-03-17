@@ -53,3 +53,7 @@ Also, my data gathering script automatically fetches files from the web and clea
 -   5: Finishing first progress report, data pipeline notebook
 
 -   14: Learned (some) how to use CRC, set up remote storage device in prep to gather full data
+
+-   16: Starting to adapt my setup onto CRC, getting file transfer protocols set up
+
+-   17: Pilot run of script on CRC after tinkering, installation. Some cleaning
