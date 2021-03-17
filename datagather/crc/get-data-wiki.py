@@ -133,8 +133,8 @@ if __name__ == '__main__':
 
         if statmsgs: print('\tclean 1')
         #fix encoding
-        if lang != 'en':   #en corpus too big; crases on this step but doesn't need it anyways
-            l = [ w.encode('utf-8').decode('raw_unicode_escape') for w in l]
+#        if lang != 'en':   #en corpus too big; crases on this step but doesn't need it anyways
+#            l = [ w.encode('utf-8').decode('raw_unicode_escape') for w in l]
 
         # parse jsons, do some cleaning of remaining XML junk
         # pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
@@ -150,9 +150,10 @@ if __name__ == '__main__':
         #             texts = texts + ' ' + text
         #     except:
         #         continue
+        pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
         texts = ''
         for line in l:
-            texts = texts + l + ' '
+            texts = texts + re.sub(pat, ' ', line) + ' '
 
         # final clean: remove punctuation, sequences of multiple spaces
         if statmsgs: print('\tclean 2')
