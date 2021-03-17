@@ -85,17 +85,17 @@ if __name__ == '__main__':
     if 'chunked' not in os.listdir():
         os.mkdir('chunked')
 
-    skip = True
+    # skip = True
 
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        if lang =='ab': ## useful for debugging
-            skip = False
-        elif skip:
-            continue
-        else:
-            break
+        # if lang =='ab': ## useful for debugging
+        #     skip = False
+        # elif skip:
+        #     continue
+        # else:
+        #     break
 
         try:
             # don't download dump if already have it from previous run:
