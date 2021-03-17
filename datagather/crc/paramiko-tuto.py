@@ -15,15 +15,19 @@ def check_pwd(address, port, usr, pwd):
 
 def sftp(address, port, usr, pwd, fname):
     try:
-        print("sftp port " + port + " of " + usr + "@" + address + ", transferring : " +
+        print("sftp port " + str(port) + " of " + usr + "@" + address + ", transferring : " +
                      fname)
         client = paramiko.client.SSHClient()
         client.load_system_host_keys() # this loads any local ssh keys
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
+        print('here')
         client.connect(address, port=port, username=usr, password=pwd)
+        print('here')
         sftp = client.open_sftp() # type SFTPClient
-        print(sftp.put(fname, fname)) #src, dest path/filename
+        print('here')
+        print(sftp.put(fname, '')) #src, dest path Documents/wikidata/
+
+        print('here')
         client.close()
     except IOError:
         print(".. host " + address + " is not up or some other error occured")
@@ -33,9 +37,9 @@ authenticated = False
 pwd = ''
 while not authenticated:
     pwd = getpass.getpass(prompt='sftp password: ')
-    authenticated = check_pwd("8.tcp.ngrok.io", "17387", "snc", pwd)
+    authenticated = check_pwd("10.0.0.25", 22, "snc", pwd)
     if not authenticated:
         print('authentication failed. try again')
     else:
         print('authenticated.')
-sftp("8.tcp.ngrok.io", "17387", "snc", pwd, "ex.txt")
+sftp("10.0.0.25", 22, "snc", pwd, "ex.txt")

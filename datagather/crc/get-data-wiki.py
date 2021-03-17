@@ -1,3 +1,4 @@
+import sys
 import os
 import wikipedia
 import requests
@@ -24,25 +25,42 @@ def check_pwd(address, port, usr, pwd):
         return False
 
 
-def sftp(address, port, usr, pwd, fname):
-    try:
-        print("sftp port " + port + " of " + usr + "@" + address + ", transferring : " +
-                     fname)
+def sftp(address, port, usr, pwd, remworkdir, fname):
+    # try:
+        # print("sftp port " + str(port) + " of " + usr + "@" + address + ", transferring : " +
+        #              remworkdir+fname)
         client = paramiko.client.SSHClient()
         client.load_system_host_keys() # this loads any local ssh keys
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
         client.connect(address, port=port, username=usr, password=pwd)
         sftp = client.open_sftp() # type SFTPClient
-        print(sftp.put(fname, fname)) #src, dest path/filename
+        sftp.put('.'+fname, remworkdir+fname) #src, dest path/filename
+        print('\ttransferred', fname)
         client.close()
-    except IOError:
-        print(".. host " + address + " is not up or some other error occured")
-        return "host not up", "host not up"
+    # except IOError:
+    #     print(".. host " + address + " is not up or some other error occured")
+    #     return "host not up", "host not up"
 
 
 if __name__ == '__main__':
+    #TODO: commandlineargs address, port, usr, statmsgs
+    address = ''
+    port = ''
+    username = ''
+    remworkdir = ''
     statmsgs = True # whether or not to output mid-language status updates
+    print(sys.argv)
+    if(len(sys.argv) != 6):
+        print('USAGE: python3 get-data-wiki.py <sftp address> <sftp port> <sftp username> <remote workdir> <verbose (0/1)>')
+        exit()
+    else:
+        address = sys.argv[1]
+        port = int(sys.argv[2])
+        username = sys.argv[3]
+        remworkdir = sys.argv[4]
+        statmsgs = bool(int(sys.argv[5]))
+
     outpath = './'
     langs = wikipedia.languages() #dictionary where key is code, value is language name in that language
 
@@ -51,9 +69,9 @@ if __name__ == '__main__':
     pwd = ''
     while not authenticated:
         pwd = getpass.getpass(prompt='sftp password: ')
-        authenticated = check_pwd("8.tcp.ngrok.io", "17387", "snc", pwd)
+        authenticated = check_pwd(address, port, username, pwd)
         if not authenticated:
-            print('authentication failed. try again')
+            print('authentication failed. try again.')
         else:
             print('authenticated.')
 
@@ -64,18 +82,20 @@ if __name__ == '__main__':
         os.mkdir('extracted')
     if 'texts' not in os.listdir():
         os.mkdir('texts')
+    if 'chunked' not in os.listdir():
+        os.mkdir('chunked')
 
-    # skip = True
+    skip = True
 
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        # if lang =='hr': ## useful for debugging
-        #     skip = False
-        # elif skip:
-        #     continue
-        # else:
-        #     break
+        if lang =='ab': ## useful for debugging
+            skip = False
+        elif skip:
+            continue
+        else:
+            break
 
         try:
             # don't download dump if already have it from previous run:
@@ -106,7 +126,10 @@ if __name__ == '__main__':
         f = open(fname, 'r')
         l = f.readlines()
         f.close()
-        # TODO: send to device
+        # send to device then delete locally
+        sftp(address, port, username, pwd, remworkdir, '/extracted/' + lang + '.txt')
+        os.remove('./extracted/' + lang + '.txt')
+        os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
 
         if statmsgs: print('\tclean 1')
         #fix encoding
@@ -117,7 +140,7 @@ if __name__ == '__main__':
         pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
         texts = ''
         for line in l:
-            if len(texts) > 100000:
+            if len(texts) > 1000:
                 break
             try:
                 article = rapidjson.loads(line)
@@ -127,16 +150,6 @@ if __name__ == '__main__':
                     texts = texts + ' ' + text
             except:
                 continue
-
-        # # tokenize
-        # if statmsgs: print('\ttokenize')
-        # f = open(fname, 'w')
-        # f.writelines(texts)
-        # f.close()
-        # subprocess.call(['sh', './tokenize.sh', lang, fname, './extracted/tokenized-'+lang+'.txt'])
-        # f = open('./extracted/tokenized-'+lang+'.txt', 'r')
-        # texts = f.read()
-        # f.close()
 
         # final clean: remove punctuation, sequences of multiple spaces
         if statmsgs: print('\tclean 2')
@@ -153,7 +166,9 @@ if __name__ == '__main__':
         f = open('./texts/' + lang + '.txt', 'w')
         f.writelines(texts + '\n')
         f.close()
-        # TODO: send to device
+        # send to device then delete locally
+        sftp(address, port, username, pwd, remworkdir, '/texts/' + lang + '.txt')
+        os.remove('./texts/' + lang + '.txt')
 
         # split to 500-char chunks
         if statmsgs: print('\tchunking')
@@ -174,9 +189,9 @@ if __name__ == '__main__':
 
         # write to file
         if statmsgs: print('\twriting to file')
-        f = open('./extracted/' + lang + '.txt', 'w')
+        f = open('./chunked/' + lang + '.txt', 'w')
         f.writelines([c+'\n' for c in chunks])
         f.close()
-        # TODO: send to device
-
-        #TODO: delete this language's local files
+        # send to device then delete locally
+        sftp(address, port, username, pwd, remworkdir, '/chunked/' + lang + '.txt')
+        os.remove('./chunked/' + lang + '.txt')
