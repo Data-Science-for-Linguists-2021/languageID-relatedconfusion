@@ -14,14 +14,12 @@ import getpass
 
 def check_pwd(address, port, usr, pwd):
     try:
-        # client = paramiko.client.SSHClient()
-        # client.load_system_host_keys() # this loads any local ssh keys
-        # client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        #
-        # client.connect(address, port=port, username=usr, password=pwd)
-        # client.close()
+        client = paramiko.client.SSHClient()
+        client.load_system_host_keys() # this loads any local ssh keys
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        subprocess.call(['ssh', user+'@'+address, '-p'+port])
+        client.connect(address, port=port, username=usr, password=pwd)
+        client.close()
         return True
     except:
         return False
