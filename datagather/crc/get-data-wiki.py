@@ -14,12 +14,14 @@ import getpass
 
 def check_pwd(address, port, usr, pwd):
     try:
-        client = paramiko.client.SSHClient()
-        client.load_system_host_keys() # this loads any local ssh keys
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        # client = paramiko.client.SSHClient()
+        # client.load_system_host_keys() # this loads any local ssh keys
+        # client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        #
+        # client.connect(address, port=port, username=usr, password=pwd)
+        # client.close()
 
-        client.connect(address, port=port, username=usr, password=pwd)
-        client.close()
+        subprocess.call(['ssh', user+'@'+address, '-p'+port])
         return True
     except:
         return False
@@ -137,19 +139,22 @@ if __name__ == '__main__':
             l = [ w.encode('utf-8').decode('raw_unicode_escape') for w in l]
 
         # parse jsons, do some cleaning of remaining XML junk
-        pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
+        # pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
+        # texts = ''
+        # for line in l:
+        #     if len(texts) > 1000:
+        #         break
+        #     try:
+        #         article = rapidjson.loads(line)
+        #         text = article['text']
+        #         text = re.sub(pat, ' ', text)
+        #         if len(text) > 0:
+        #             texts = texts + ' ' + text
+        #     except:
+        #         continue
         texts = ''
         for line in l:
-            if len(texts) > 1000:
-                break
-            try:
-                article = rapidjson.loads(line)
-                text = article['text']
-                text = re.sub(pat, ' ', text)
-                if len(text) > 0:
-                    texts = texts + ' ' + text
-            except:
-                continue
+            texts.append(l+' ')
 
         # final clean: remove punctuation, sequences of multiple spaces
         if statmsgs: print('\tclean 2')
