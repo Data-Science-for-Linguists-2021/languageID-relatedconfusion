@@ -85,15 +85,15 @@ if __name__ == '__main__':
     if 'chunked' not in os.listdir():
         os.mkdir('chunked')
 
-    # skip = True
+    skip = True
 
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        # if lang =='ab': ## useful for debugging
-        #     skip = False
-        # elif skip:
-        #     continue
+        if lang =='ceb': ## useful for debugging
+            skip = False
+        elif skip:
+            continue
         # else:
         #     break
 
@@ -119,8 +119,10 @@ if __name__ == '__main__':
         #will be included in the corpus
 
         #remove XML
-        if statmsgs: print('\tremove XML')
-        subprocess.call(['sh', './get-data-wiki.sh', './dumps/'+lang+'-raw.xml.bz2', lang])
+        if './extracted/' + lang + '.txt' not in os.listdir('./extracted/'):
+            if statmsgs: print('\tremove XML')
+            subprocess.call(['sh', './get-data-wiki.sh', './dumps/'+lang+'-raw.xml.bz2', lang])
+        elif statmsgs: print('reading from backup extracted')
 
         fname = './extracted/' + lang + '.txt' #temp file created by the shell script
         f = open(fname, 'r')
@@ -131,25 +133,8 @@ if __name__ == '__main__':
         os.remove('./extracted/' + lang + '.txt')
         os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
 
-        if statmsgs: print('\tclean 1')
-        #fix encoding
-#        if lang != 'en':   #en corpus too big; crases on this step but doesn't need it anyways
-#            l = [ w.encode('utf-8').decode('raw_unicode_escape') for w in l]
 
-        # parse jsons, do some cleaning of remaining XML junk
-        # pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
-        # texts = ''
-        # for line in l:
-        #     if len(texts) > 1000:
-        #         break
-        #     try:
-        #         article = rapidjson.loads(line)
-        #         text = article['text']
-        #         text = re.sub(pat, ' ', text)
-        #         if len(text) > 0:
-        #             texts = texts + ' ' + text
-        #     except:
-        #         continue
+        if statmsgs: print('\tclean 1')
         pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
         textsarr = []
         for line in l:
