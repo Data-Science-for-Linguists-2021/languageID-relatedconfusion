@@ -90,12 +90,12 @@ if __name__ == '__main__':
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        if lang =='ceb': ## useful for debugging
+        if lang =='en': ## useful for debugging
             skip = False
         elif skip:
             continue
-        # else:
-        #     break
+        else:
+            break
 
         try:
             # don't download dump if already have it from previous run:
