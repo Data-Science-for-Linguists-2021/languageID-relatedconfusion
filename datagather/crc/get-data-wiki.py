@@ -90,7 +90,7 @@ if __name__ == '__main__':
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        if lang =='ab': ## useful for debugging
+        if lang =='en': ## useful for debugging
             skip = False
         elif skip:
             continue
@@ -153,10 +153,10 @@ if __name__ == '__main__':
         texts = re.sub(pattern, ' ', texts) #replace multiple spaces with just one
 
         # write non-chunked text to file
-        len = len(texts)
+        slen = len(texts)
         for i in range(10):
             f = open('./texts/' + lang + str(i) + '.txt', 'w')
-            f.writelines(texts[int(len/10*i): int(len/10*(i+1))] + '\n')
+            f.writelines(texts[int(slen/10*i): int(slen/10*(i+1))] + '\n')
             f.close()
             # send to device then delete locally
             sftp(address, port, username, pwd, remworkdir, '/texts/' + lang + str(i) + '.txt')
