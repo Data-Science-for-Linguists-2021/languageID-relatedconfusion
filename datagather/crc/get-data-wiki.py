@@ -129,7 +129,7 @@ if __name__ == '__main__':
         l = f.readlines()
         f.close()
         # send to device then delete locally
-        sftp(address, port, username, pwd, remworkdir, '/extracted/' + lang + '.txt')
+        # sftp(address, port, username, pwd, remworkdir, '/extracted/' + lang + '.txt')
         # os.remove('./extracted/' + lang + '.txt')
         # os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
 
