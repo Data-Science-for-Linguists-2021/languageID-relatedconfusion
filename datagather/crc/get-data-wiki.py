@@ -90,7 +90,7 @@ if __name__ == '__main__':
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        if lang =='en': ## useful for debugging
+        if lang =='ab': ## useful for debugging
             skip = False
         elif skip:
             continue
@@ -153,11 +153,13 @@ if __name__ == '__main__':
         texts = re.sub(pattern, ' ', texts) #replace multiple spaces with just one
 
         # write non-chunked text to file
-        f = open('./texts/' + lang + '.txt', 'w')
-        f.writelines(texts + '\n')
-        f.close()
-        # send to device then delete locally
-        sftp(address, port, username, pwd, remworkdir, '/texts/' + lang + '.txt')
+        len = len(texts)
+        for i in range(10):
+            f = open('./texts/' + lang + str(i) + '.txt', 'w')
+            f.writelines(texts[int(len/10*i): int(len/10*(i+1))] + '\n')
+            f.close()
+            # send to device then delete locally
+            sftp(address, port, username, pwd, remworkdir, '/texts/' + lang + str(i) + '.txt')
         # os.remove('./texts/' + lang + '.txt')
 
         # split to 500-char chunks
