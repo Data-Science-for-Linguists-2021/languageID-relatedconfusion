@@ -119,7 +119,7 @@ if __name__ == '__main__':
         #will be included in the corpus
 
         #remove XML
-        if './extracted/' + lang + '.txt' not in os.listdir('./extracted/'):
+        if lang + '.txt' not in os.listdir('./extracted/'):
             if statmsgs: print('\tremove XML')
             subprocess.call(['sh', './get-data-wiki.sh', './dumps/'+lang+'-raw.xml.bz2', lang])
         elif statmsgs: print('reading from backup extracted')
