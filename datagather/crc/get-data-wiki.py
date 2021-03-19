@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
         try:
             # don't download dump if already have it from previous run:
-            if lang + '-raw.xml.bz2' not in os.listdir('./dumps/'):
+            if lang + '-raw.xml.bz2' not in os.listdir('./dumps/') and './extracted/' + lang + '.txt' not in os.listdir('./extracted/'):
                 # download the dump, save raw to file
                 dumpname = lang + 'wiki-latest-pages-articles.xml.bz2'
                 dumplink = 'https://dumps.wikimedia.org/' + lang + 'wiki/latest/' + dumpname
@@ -130,8 +130,8 @@ if __name__ == '__main__':
         f.close()
         # send to device then delete locally
         sftp(address, port, username, pwd, remworkdir, '/extracted/' + lang + '.txt')
-        os.remove('./extracted/' + lang + '.txt')
-        os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
+        # os.remove('./extracted/' + lang + '.txt')
+        # os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
 
 
         if statmsgs: print('\tclean 1')
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         f.close()
         # send to device then delete locally
         sftp(address, port, username, pwd, remworkdir, '/texts/' + lang + '.txt')
-        os.remove('./texts/' + lang + '.txt')
+        # os.remove('./texts/' + lang + '.txt')
 
         # split to 500-char chunks
         if statmsgs: print('\tchunking')

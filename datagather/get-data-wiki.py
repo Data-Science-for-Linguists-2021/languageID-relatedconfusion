@@ -22,17 +22,17 @@ if __name__ == '__main__':
     if 'texts' not in os.listdir():
         os.mkdir('texts')
 
-    # skip = True
+    skip = True
 
     print('status\t\tcode\tlanguage name')
     print('------------------------------------')
     for lang in langs.keys():
-        # if lang =='hr': ## useful for debugging
-        #     skip = False
-        # elif skip:
-        #     continue
-        # else:
-        #     break
+        if lang =='en': ## useful for debugging
+            skip = False
+        elif skip:
+            continue
+        else:
+            break
 
         try:
             # don't download dump if already have it from previous run:
@@ -73,26 +73,16 @@ if __name__ == '__main__':
         pat = re.compile('\\n|\d|https?://.*|&lt.*;|__.*__')
         texts = ''
         for line in l:
-            if len(texts) > 100000:
-                break
             try:
                 article = rapidjson.loads(line)
                 text = article['text']
                 text = re.sub(pat, ' ', text)
                 if len(text) > 0:
+                    # texts.append(text)
                     texts = texts + ' ' + text
             except:
                 continue
-
-        # # tokenize
-        # if statmsgs: print('\ttokenize')
-        # f = open(fname, 'w')
-        # f.writelines(texts)
-        # f.close()
-        # subprocess.call(['sh', './tokenize.sh', lang, fname, './extracted/tokenized-'+lang+'.txt'])
-        # f = open('./extracted/tokenized-'+lang+'.txt', 'r')
-        # texts = f.read()
-        # f.close()
+        # texts = ' '.join(texts)
 
         # final clean: remove punctuation, sequences of multiple spaces
         if statmsgs: print('\tclean 2')
