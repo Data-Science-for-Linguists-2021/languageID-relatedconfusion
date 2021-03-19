@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
         try:
             # don't download dump if already have it from previous run:
-            if lang + '-raw.xml.bz2' not in os.listdir('./dumps/') and './extracted/' + lang + '.txt' not in os.listdir('./extracted/'):
+            if lang + '-raw.xml.bz2' not in os.listdir('./dumps/') and lang + '.txt' not in os.listdir('./extracted/'):
                 # download the dump, save raw to file
                 dumpname = lang + 'wiki-latest-pages-articles.xml.bz2'
                 dumplink = 'https://dumps.wikimedia.org/' + lang + 'wiki/latest/' + dumpname
