@@ -191,6 +191,7 @@ if __name__ == '__main__':
 
         # clean
         os.remove('./chunked/' + lang + '.txt')
-        os.remove('./texts/' + lang + '.txt')
+        for i in range(num_parts):
+            os.remove('./texts/' + lang + str(i) + '.txt')
         os.remove('./extracted/' + lang + '.txt')
         os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
