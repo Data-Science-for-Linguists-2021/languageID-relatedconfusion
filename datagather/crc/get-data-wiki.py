@@ -92,10 +92,11 @@ if __name__ == '__main__':
     for lang in langs.keys():
         if lang =='en': ## useful for debugging
             skip = False
+            continue
         elif skip:
             continue
-        else:
-            break
+        # else:
+        #     break
 
         try:
             # don't download dump if already have it from previous run:
@@ -125,13 +126,12 @@ if __name__ == '__main__':
         elif statmsgs: print('reading from backup extracted')
 
         fname = './extracted/' + lang + '.txt' #temp file created by the shell script
+        # send to device
+        sftp(address, port, username, pwd, remworkdir,
+            '/extracted/' + lang + '.txt') #sftp NEEDS *this* filename format, do not touch!
         f = open(fname, 'r')
         l = f.readlines()
         f.close()
-        # send to device then delete locally
-        # sftp(address, port, username, pwd, remworkdir, '/extracted/' + lang + '.txt')
-        # os.remove('./extracted/' + lang + '.txt')
-        # os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
 
 
         if statmsgs: print('\tclean 1')
@@ -153,14 +153,16 @@ if __name__ == '__main__':
         texts = re.sub(pattern, ' ', texts) #replace multiple spaces with just one
 
         # write non-chunked text to file
-        slen = len(texts)
-        for i in range(10):
+        slen = len(texts) # num chars
+        sz_limit = 2**27 # 2 gigabytes =2^30. Divide by 8=2^3 bits per char, 2^27
+        num_parts = (slen // sz_limit) + 1
+        fsz = int(slen/num_parts)
+        for i in range(num_parts):
             f = open('./texts/' + lang + str(i) + '.txt', 'w')
-            f.writelines(texts[int(slen/10*i): int(slen/10*(i+1))] + '\n')
+            f.writelines(texts[fsz*i: fsz*(i+1)] + '\n')
             f.close()
-            # send to device then delete locally
+            # send to device
             sftp(address, port, username, pwd, remworkdir, '/texts/' + lang + str(i) + '.txt')
-        # os.remove('./texts/' + lang + '.txt')
 
         # split to 500-char chunks
         if statmsgs: print('\tchunking')
@@ -186,4 +188,9 @@ if __name__ == '__main__':
         f.close()
         # send to device then delete locally
         sftp(address, port, username, pwd, remworkdir, '/chunked/' + lang + '.txt')
+
+        # clean
         os.remove('./chunked/' + lang + '.txt')
+        os.remove('./texts/' + lang + '.txt')
+        os.remove('./extracted/' + lang + '.txt')
+        os.remove('./dumps/'+lang+'-raw.xml.bz2') #delete the raw dump too
