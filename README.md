@@ -12,3 +12,9 @@ The full dataset has been gathered!
 
 See `progress_report.md` for more details, or `project_plan.md` for overall
 plan.
+
+### License
+
+The data is licensed under the [Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/) policy and the [GNU Free Documentation License (GFDL)](https://en.wikipedia.org/wiki/Wikipedia:Copyrights). See the README.md in that directory for more information.
+
+All other parts of this repository are licensed under the GNU General Public License v3.0.
