@@ -7,7 +7,7 @@ confused by the classifier and why
 
 ### Current status
 
-Second Progress Report (due 23 March) is NOT completed.  
+:white_check_mark: Second Progress Report (due 23 March) IS completed.  
 The full dataset has been gathered!
 
 See `progress_report.md` for more details, or `project_plan.md` for overall
