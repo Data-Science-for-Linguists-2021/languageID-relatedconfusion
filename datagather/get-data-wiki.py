@@ -29,10 +29,11 @@ if __name__ == '__main__':
     for lang in langs.keys():
         if lang =='en': ## useful for debugging
             skip = False
+            continue
         elif skip:
             continue
-        else:
-            break
+        # else:
+        #     break
 
         try:
             # don't download dump if already have it from previous run:
