@@ -41,13 +41,15 @@ I also started looking around for ideas on classifier models and architectures. 
 - Finalize details of machine learning architecture
 - Build architecture and try with toy dataset - with and without anonymized writing system
 
-### Licensing plan
+### Licensing plan, for everything but the data
 
-I don't really care what others do with my code/work; I would be a little surprised but glad if it's helpful to anyone. However, it would be nice to get credit for it and would prefer people cited this repository or my name if they're going to reuse anything.
+I don't really care what others do with my code/work; I would be a little surprised but glad if it's helpful to anyone. However, it would be nice to get credit for it and would prefer people cited this repository or my name if they're going to reuse anything. According to [this site](https://choosealicense.com/licenses/gpl-3.0/) run by GitHub, GNU General Public License v3.0 lets people reuse my work, but they're required to cite me as the source.
 
 ### Data sharing plan
 
 As far as the data, it took so much work to gather that I really wish I could share it publicly for all to use. Unfortunately, the full dataset (excluding the raw dump files straight from Wikipedia) is about 175GB so I don't know where I could do that. However, the chunked files are pretty small so I'll try putting those on GitHub. I also wasn't quite sure how to attribute the authors of the wikipedia pages since I am no longer distributing the articles as "articles" but rather as random 500-character segments drawn at random (as in, even I don't know) from the entirety of each language's wikipedia's server backup. However, I found [this page](https://en.wikipedia.org/wiki/Category:Wikipedians_by_language) that lists the all the authors to Wikipedia by their language, so I will be sure to include a copy of this link in order to credit everybody. I will also include a link to the dump website and information on the wikipedia license.
+
+Wikipedia is distributed under the [Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/) policy and the [GNU Free Documentation License (GFDL)](https://en.wikipedia.org/wiki/Wikipedia:Copyrights) and wants people reusing the data to share it under similar licenses. So I will use the [Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/) policy for the data.
 
 ---
 
