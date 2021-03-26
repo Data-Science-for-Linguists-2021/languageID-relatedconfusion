@@ -31,8 +31,8 @@ def sftp(address, port, usr, pwd, fname):
 
 ######"""YOUR INFO HERE"""######
 address = ""
-port = -1
-username = "snc"
+port = 22 #change if youre on a different wifi networek
+username = ""
 ################################
 
 # process to obtain remote password

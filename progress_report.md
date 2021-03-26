@@ -95,3 +95,5 @@ Wikipedia data is distributed under the [Attribution-ShareAlike 3.0 Unported (CC
 -   21: It's official: 248 languages' Wikipedias gathered and cleaned!
 
 -   22: Progress report 2 finished
+
+-   25: First attempt of ML (NB), plus clustering on confusion matrix results - much tweaking to do but promising
