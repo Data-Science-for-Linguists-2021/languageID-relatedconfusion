@@ -97,3 +97,7 @@ Wikipedia data is distributed under the [Attribution-ShareAlike 3.0 Unported (CC
 -   22: Progress report 2 finished
 
 -   25: First attempt of ML (NB), plus clustering on confusion matrix results - much tweaking to do but promising
+
+-   26: Wrote code to anonymize writing systems, some tweaking of storage format still to do
+
+-   28: Looked up information about the languages in the clusters

@@ -8,7 +8,7 @@ confused by the classifier and why
 ### Current status
 
 :white_check_mark: Second Progress Report (due 23 March) IS completed.  
-The full dataset has been gathered!
+Preliminary language identification and relatedness-mapping clustering completed!
 
 See `progress_report.md` for more details, or `project_plan.md` for overall
 plan.
