@@ -7,10 +7,10 @@ confused by the classifier and why
 
 ### Current status
 
-Third Progress Report (due 13 April) is NOT completed.
+:white_check_mark: Third Progress Report (due 13 April) IS completed.
 
 See `progress_report.md` for more details, or `project_plan.md` for overall
-plan. Or go to the [guestbook](https://github.com/Data-Science-for-Linguists-2021/Class-Lounge/blob/main/guestbooks/guestbook_sonia.md).
+plan. Or go to the [guestbook](https://github.com/Data-Science-for-Linguists-2021/Class-Lounge/blob/main/guestbooks/guestbook_sonia.md).  
 
 ### License
 
