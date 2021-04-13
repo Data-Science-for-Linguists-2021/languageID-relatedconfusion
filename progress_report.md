@@ -53,6 +53,20 @@ Wikipedia data is distributed under the [Attribution-ShareAlike 3.0 Unported (CC
 
 ---
 
+## Third progress report
+
+At a glance, what I did since last project report: I trained a naive bayes (NB) model on the data (without and without writing systems anonymized) and subsequently used a clustering method to form groups of similar or commonly-confused languages. The model for the non-anonymized (NA) writing system was completed a couple weeks ago, so I was able to spend some time thinking about analysis or final conclusions to draw from that subset of results. I just trained the model for the anonymized (A) writing system today, but it achieved such good accuracy (over 99% accuracy on 5 fold crossval) that I'm having trouble getting much analysis of how languages are confused with each other - I guess it's sort of a good problem to have? I've never had to purposefully try to make a model perform *worse* before, but I might do that so I can see better which languages are more likely to get confused. I also do find it slightly suspicious that performance would be so good, so I'll try to spend a little more time making sure that really is correct.
+
+Going into a little more details, I'll walk through chronologically. I got the results for NA NB just after progress report 2 was due. I quickly noticed that a confusion matrix for 248 classes isn't really readable and I needed a better way to distill the model outputs for analysis. I remembered that a [student](https://github.com/Data-Science-for-Linguists/Document_Clustering/blob/master/clustering.ipynb) from a previous year did clustering of some texts, so I followed that method with my model output. When the model makes predictions for a 248-class variable, you get a 248x248 confusion matrix where each datapoint/predicted input is assigned some index in this matrix. For some chunk at some position, its row index corresponds to its true language and its column index corresponds to the language predicted by the model. So, I used this confusion matrix directly as input to a clustering algorithm (k-means). Each datapoint is a vector that represents a "true" language, drawn from the rows of the confusion matrix. Each feature of the vector is the "predicted" languages of any chunk that had this true language. So, if the language at row index 2 has 10,000 chunks and 9,500 are classified correctly while 500 are mistaken for the language at index 8, then the vector representing true language 2 will have 248 (number of languages) elements, with all elements as 0 except at the second position, which will be 9,500, and the eight position, which will be 800 (technically I normalize the matrix row-wise too but don't feel getting into this now). These 248 vectors are fed to the k-means algorithm which spits out k groups/clusters of the vectors. When I re-associate these vectors with their ground-truth language name, I see which languages have been placed in groups together. Real examples of these groups are "Bosnian, Croatian and Serbo-Croatian" or "Modern Standard Arabic and Maroccan Arabic". Looking at these groups my preliminary conclusion has reached that geographical relatedness trumps ancestral relatedness, but I'll elaborate in my presentation Thursday (oh gosh..).
+
+Then I started working on the anonymized writing systems. In progress report 1, I mentioned an algorithm where one computes how common each character is, then substitutes each character in the text with indices where 0 is most common, 1 is second most common and so on. I applied this algorithm and, after some technical difficulties of how to actually represent these numbers to sklearn, I was able to use an equivalent feature (character bigrams) extraction and NB setup to the NA NB version. As mentioned earlier, it achieved very high performance and so clustering came out a little odd. I'll mess with this more next.
+
+Earlier I was talking about and found resources to implement a CNN as well, but I'm looking at how the end of semester and undergrad is going and also seeing that the results for NB give a lot to discuss. So, I'd still like to do the CNN if I have time but I'm thinking the project could still stand on its feet without that and focusing more quality to the NB and the analysis. I purposefully kept model ideas pretty loose in the project proposal, since I would want to see the results of some things before trying others. We'll see I suppose.
+
+As far as the structure of the repository, it's structured the way it is because both my computer and I tend to get overwhelmed if any Jupyter notebook is too big. Last progress report I directed you to the "existing" data gathering notebook [data-exploration.ipynb](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/blob/main/data-explanation.ipynb) but, as I no longer am gathering data, I have created a few new notebooks that handle different parts of the pipeline. Each of these are "new continuing": [anon-writingsys.ipynb](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/blob/main/anon-writingsys.ipynb) is for the algorithm that anonymizes the writing systems and [naive-bayes.ipynb](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/blob/main/naivebayes.ipynb) contains both NA NB and A NB, along with clustering for each. A NB has both unigram and bigram versions, unigrams performed poorly (accuracy about 35%) but has slightly more meaningful clustering if not still strange results compared to ANB bigrams. I used the file [MLdataprep.ipynb](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/blob/main/MLdataprep.ipynb) to prepare the data for the NB notebook but I'm intending to move the contents of this notebook into the NB notebook soon.
+
+---
+
 2021
 ---
 
@@ -101,3 +115,14 @@ Wikipedia data is distributed under the [Attribution-ShareAlike 3.0 Unported (CC
 -   26: Wrote code to anonymize writing systems, some tweaking of storage format still to do
 
 -   28: Looked up information about the languages in the clusters
+
+### April
+
+-  10: Working on anonymized writing systems file format
+
+-  11: Trying to do NB with anonymous writing systems
+
+-  12: Successfully did anonymized NB, progress report 3
+
+
+:white_check_mark:

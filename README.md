@@ -7,11 +7,10 @@ confused by the classifier and why
 
 ### Current status
 
-:white_check_mark: Second Progress Report (due 23 March) IS completed.  
-Preliminary language identification and relatedness-mapping clustering completed!
+Third Progress Report (due 13 April) is NOT completed.
 
 See `progress_report.md` for more details, or `project_plan.md` for overall
-plan.
+plan. Or go to the [guestbook](https://github.com/Data-Science-for-Linguists-2021/Class-Lounge/blob/main/guestbooks/guestbook_sonia.md).
 
 ### License
 
