@@ -41,6 +41,7 @@ Subdirectories
     - [ex.txt](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/blob/main/datagather/crc/ex.txt) is just a text file, sent across the network by paramiko-tuto.py
 - [figs](https://github.com/Data-Science-for-Linguists-2021/languageID-relatedconfusion/tree/main/figs) contains figures, most of which are in the final report
 
+The guestbook is [here](https://github.com/Data-Science-for-Linguists-2021/Class-Lounge/blob/main/guestbooks/guestbook_sonia.md).
 
 ### License
 
